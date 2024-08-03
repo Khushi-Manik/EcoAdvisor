@@ -5,5 +5,5 @@ def main():
     st.title("Streamlit Project")
     page1.display_page()
 
-if _name_ == "_main_":
+if __name__ == "_main_":
     main()
