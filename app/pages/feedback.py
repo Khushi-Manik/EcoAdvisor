@@ -1,15 +1,16 @@
 import streamlit as st
 
-# Define the refined color scheme
+# Define the color scheme
 primary_green = "#1b4d3e"  # Darker shade of green
-darker_green = "#2c6e49"  # More vibrant dark green
-accent_green = "#014421"
-background_color = "#f8f9fa"  # Light background for better contrast
+darker_green = "#1c352d"  # Dark green for header
+accent_green = "#014421"  # Accent green for buttons
+background_color = "#FFFFFF"  # White background for a clean look
 header_background_color = darker_green
 header_text_color = "#FFFFFF"
 section_background_color = primary_green
 section_text_color = "#FFFFFF"
-username_color = primary_green
+input_text_color = "#000000"  # Black color for input text
+label_text_color = primary_green  # Use primary green for label text
 
 # Apply custom CSS styles
 st.markdown(
@@ -24,6 +25,10 @@ st.markdown(
         padding: 15px;
         border-radius: 10px;
         margin-bottom: 20px;
+        text-align: center;
+    }}
+    .header h1 {{
+        color: {header_text_color};  /* Set header title color to white */
     }}
     .section {{
         background-color: {section_background_color};
@@ -32,9 +37,8 @@ st.markdown(
         border-radius: 10px;
         margin-bottom: 20px;
     }}
-    .username {{
-        color: {username_color};
-        font-weight: bold;
+    .section h2 {{
+        color: {section_text_color};  /* Set section title color to white */
     }}
     .submit-btn {{
         background-color: {accent_green};
@@ -48,11 +52,36 @@ st.markdown(
     .submit-btn:hover {{
         background-color: #007200;
     }}
+    .stTextInput > div > label, .stTextArea > div > label {{
+        color: {label_text_color} !important;
+        font-weight: bold;
+    }}
+    .stTextInput > div > input {{
+        background-color: {background_color};
+        color: {input_text_color} !important;
+        border: 2px solid {accent_green};
+        border-radius: 4px;
+        padding: 10px;
+    }}
+    .stTextArea > div > textarea {{
+        background-color: {background_color};
+        color: {input_text_color} !important;
+        border: 2px solid {accent_green};
+        border-radius: 4px;
+        padding: 10px;
+    }}
     .stSlider > div[data-baseweb="slider"] > div:first-child > div {{
         background-color: {primary_green} !important;
     }}
+    .stSlider > div > div {{
+        color: {label_text_color} !important;
+    }}
     .stRadio > div > label > div[data-baseweb="radio"] {{
         background-color: {primary_green} !important;
+    }}
+    .stRadio > div > label {{
+        color: {label_text_color} !important;
+        font-weight: bold;
     }}
     </style>
     """,
@@ -68,9 +97,9 @@ def main():
         # Personal Information
         st.markdown('<div class="section"><h2>Personal Information</h2></div>', unsafe_allow_html=True)
 
-        name = st.text_input('Name')
-        email = st.text_input('Email')
-        phone_number = st.text_input('Phone Number')
+        name = st.text_input('Name', key='name')
+        email = st.text_input('Email', key='email')
+        phone_number = st.text_input('Phone Number', key='phone_number')
 
         # User Experience
         st.markdown('<div class="section"><h2>User Experience</h2></div>', unsafe_allow_html=True)
@@ -95,7 +124,7 @@ def main():
             ['Not Appealing', 'Slightly Appealing', 'Moderately Appealing', 'Very Appealing', 'Extremely Appealing']
         )
 
-        comments = st.text_area('Additional Comments or Suggestions')
+        comments = st.text_area('Additional Comments or Suggestions', key='comments')
 
         # Submit Button
         submit_button = st.form_submit_button(label='Submit', help='Click to submit your feedback')
@@ -103,6 +132,8 @@ def main():
         if submit_button:
             if not name.strip() or not email.strip() or not phone_number.strip() or experience_rating is None:
                 st.error("Please complete all required fields before submitting.")
+            elif '@' not in email or '.' not in email.split('@')[-1]:
+                st.error("Please enter a valid email address.")
             else:
                 feedback = {
                     "Name": name,
@@ -116,6 +147,7 @@ def main():
                 }
                 # Save feedback or send it to a database
                 st.success("Thank you for your feedback! Your responses have been recorded.")
+                st.json(feedback)  # Display the feedback in JSON format for visibility
 
 if __name__ == "__main__":
     main()
