@@ -1,19 +1,79 @@
 import streamlit as st
 
+# Define the refined color scheme
+primary_green = "#1b4d3e"  # Darker shade of green
+darker_green = "#2c6e49"  # More vibrant dark green
+accent_green = "#014421"
+background_color = "#f8f9fa"  # Light background for better contrast
+header_background_color = darker_green
+header_text_color = "#FFFFFF"
+section_background_color = primary_green
+section_text_color = "#FFFFFF"
+username_color = primary_green
+
+# Apply custom CSS styles
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-color: {background_color};
+    }}
+    .header {{
+        background-color: {header_background_color};
+        color: {header_text_color};
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }}
+    .section {{
+        background-color: {section_background_color};
+        color: {section_text_color};
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }}
+    .username {{
+        color: {username_color};
+        font-weight: bold;
+    }}
+    .submit-btn {{
+        background-color: {accent_green};
+        color: #FFFFFF;
+        font-weight: bold;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }}
+    .submit-btn:hover {{
+        background-color: #007200;
+    }}
+    .stSlider > div[data-baseweb="slider"] > div:first-child > div {{
+        background-color: {primary_green} !important;
+    }}
+    .stRadio > div > label > div[data-baseweb="radio"] {{
+        background-color: {primary_green} !important;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 def main():
-    st.title('Feedback Form')
+    # Set the title with a refined color scheme
+    st.markdown('<div class="header"><h1>Feedback Form</h1></div>', unsafe_allow_html=True)
 
     # Create a form for feedback submission
     with st.form(key='feedback_form'):
         # Personal Information
-        st.header('Personal Information')
+        st.markdown('<div class="section"><h2>Personal Information</h2></div>', unsafe_allow_html=True)
 
         name = st.text_input('Name')
         email = st.text_input('Email')
         phone_number = st.text_input('Phone Number')
 
         # User Experience
-        st.header('User Experience')
+        st.markdown('<div class="section"><h2>User Experience</h2></div>', unsafe_allow_html=True)
 
         experience_rating = st.slider(
             'How would you rate your experience while browsing our website?',
@@ -38,7 +98,7 @@ def main():
         comments = st.text_area('Additional Comments or Suggestions')
 
         # Submit Button
-        submit_button = st.form_submit_button(label='Submit')
+        submit_button = st.form_submit_button(label='Submit', help='Click to submit your feedback')
 
         if submit_button:
             if not name.strip() or not email.strip() or not phone_number.strip() or experience_rating is None:

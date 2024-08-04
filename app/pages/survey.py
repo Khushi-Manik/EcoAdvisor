@@ -2,6 +2,55 @@ import streamlit as st
 import json
 import os
 
+# Define the color scheme
+primary_green = "#1b4d3e"
+darker_green = "#1c352d"
+accent_green = "#014421"
+background_color = "#FFFFFF"
+header_background_color = darker_green
+header_text_color = "#FFFFFF"
+section_background_color = primary_green
+section_text_color = "#FFFFFF"
+username_color = primary_green
+
+# Custom CSS for the theme
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-color: {background_color};
+    }}
+    .header {{
+        background-color: {header_background_color};
+        color: {header_text_color};
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }}
+    .section {{
+        background-color: {section_background_color};
+        color: {section_text_color};
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }}
+    .username {{
+        color: {username_color};
+        font-weight: bold;
+    }}
+    .submit-btn {{
+        background-color: {accent_green};
+        color: #FFFFFF;
+        font-weight: bold;
+    }}
+    .submit-btn:hover {{
+        background-color: #007200;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Path to store responses
 RESPONSES_FILE = 'survey_responses.json'
 
@@ -18,11 +67,12 @@ def save_response(response):
         json.dump(responses, file, indent=4)
 
 def main():
-    st.title('Household Energy Consumption Survey')
+    # Set the title with a refined color scheme
+    st.markdown('<div class="header"><h1>Household Energy Consumption Survey</h1></div>', unsafe_allow_html=True)
 
     with st.form(key='survey_form'):
         # Section 0: Contact Information
-        st.header('Section 0: Contact Information')
+        st.markdown('<div class="section"><h2>Section 0: Contact Information</h2></div>', unsafe_allow_html=True)
 
         name = st.text_input('Name', key='name')
         email = st.text_input('Email', key='email')
@@ -35,7 +85,7 @@ def main():
             st.session_state.received_incentives = 'No'
 
         # Section 1: Demographic Information
-        st.header('Section 1: Demographic Information')
+        st.markdown('<div class="section"><h2>Section 1: Demographic Information</h2></div>', unsafe_allow_html=True)
 
         household_size = st.selectbox(
             'How many people live in your household?',
@@ -56,7 +106,7 @@ def main():
         )
 
         # Section 2: Energy Consumption Patterns
-        st.header('Section 2: Energy Consumption Patterns')
+        st.markdown('<div class="section"><h2>Section 2: Energy Consumption Patterns</h2></div>', unsafe_allow_html=True)
 
         electricity_use_time = st.multiselect(
             'When do you use the most electricity at home? (Select all that apply)',
@@ -83,7 +133,7 @@ def main():
         )
 
         # Section 3: Technology and Monitoring
-        st.header('Section 3: Technology and Monitoring')
+        st.markdown('<div class="section"><h2>Section 3: Technology and Monitoring</h2></div>', unsafe_allow_html=True)
 
         using_smart_devices = st.radio(
             'Are you currently using any smart devices for energy monitoring?',
@@ -109,7 +159,7 @@ def main():
         )
 
         # Section 4: Behavioral Insights and Barriers
-        st.header('Section 4: Behavioral Insights and Barriers')
+        st.markdown('<div class="section"><h2>Section 4: Behavioral Insights and Barriers</h2></div>', unsafe_allow_html=True)
 
         barriers = st.multiselect(
             'What barriers do you face in implementing energy-saving measures? (Select all that apply)',
@@ -134,8 +184,8 @@ def main():
         else:
             incentives = []
 
-        # Submit Button
-        submit_button = st.form_submit_button(label='Submit')
+        # Submit Button with custom style
+        submit_button = st.form_submit_button(label='Submit', help='Click to submit your responses', args=('Submit',), kwargs={'on_click': lambda: st.success('Survey Submitted!')})
 
         if submit_button:
             # Validate that all required fields are filled
@@ -176,7 +226,7 @@ def main():
 
                 save_response(response)
                 
-                st.success("Thank you for participating in the survey! Your responses have been recorded.")
+                st.success("Thank you for your feedback! Your responses have been recorded.")
 
 if __name__ == "__main__":
     main()
