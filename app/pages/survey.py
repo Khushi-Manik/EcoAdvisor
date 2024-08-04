@@ -3,10 +3,10 @@ import json
 import os
 
 # Define the color scheme
-primary_green = "#1b4d3e"
-darker_green = "#1c352d"
-accent_green = "#014421"
-background_color = "#FFFFFF"
+primary_green = "#1b4d3e"  # Darker shade of green
+darker_green = "#1c352d"   # Dark green for header
+accent_green = "#014421"   # Accent green for buttons
+background_color = "#FFFFFF"  # White background for a clean look
 header_background_color = darker_green
 header_text_color = "#FFFFFF"
 section_background_color = primary_green
@@ -26,6 +26,10 @@ st.markdown(
         padding: 15px;
         border-radius: 10px;
         margin-bottom: 20px;
+        text-align: center;
+    }}
+    .header h1 {{
+        color: {header_text_color};
     }}
     .section {{
         background-color: {section_background_color};
@@ -33,6 +37,9 @@ st.markdown(
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 20px;
+    }}
+    .section h2 {{
+        color: {section_text_color};
     }}
     .username {{
         color: {username_color};
@@ -42,9 +49,41 @@ st.markdown(
         background-color: {accent_green};
         color: #FFFFFF;
         font-weight: bold;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
     }}
     .submit-btn:hover {{
         background-color: #007200;
+    }}
+    .stTextInput > div > label, .stTextArea > div > label {{
+        color: {primary_green} !important;
+        font-weight: bold;
+    }}
+    .stTextInput > div > input {{
+        background-color: {background_color};
+        color: #000000 !important;
+        border: 2px solid {accent_green};
+        border-radius: 4px;
+        padding: 10px;
+    }}
+    .stTextArea > div > textarea {{
+        background-color: {background_color};
+        color: #000000 !important;
+        border: 2px solid {accent_green};
+        border-radius: 4px;
+        padding: 10px;
+    }}
+    .stSelectbox > div > div {{
+        color: {primary_green} !important;
+    }}
+    .stRadio > div > label > div[data-baseweb="radio"] {{
+        background-color: {primary_green} !important;
+    }}
+    .stRadio > div > label {{
+        color: {primary_green} !important;
+        font-weight: bold;
     }}
     </style>
     """,
@@ -185,7 +224,12 @@ def main():
             incentives = []
 
         # Submit Button with custom style
-        submit_button = st.form_submit_button(label='Submit', help='Click to submit your responses', args=('Submit',), kwargs={'on_click': lambda: st.success('Survey Submitted!')})
+        submit_button = st.form_submit_button(
+            label='Submit', 
+            help='Click to submit your responses', 
+            args=('Submit',), 
+            kwargs={'on_click': lambda: st.success('Survey Submitted!')}
+        )
 
         if submit_button:
             # Validate that all required fields are filled
